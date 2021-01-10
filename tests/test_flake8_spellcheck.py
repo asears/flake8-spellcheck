@@ -235,7 +235,6 @@ class TestName:
         assert result.out_lines == []
         assert result.exit_code == 0
 
-
     def test_disabled(self, flake8dir):
         flake8dir.make_example_py(
             """

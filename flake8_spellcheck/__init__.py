@@ -159,7 +159,6 @@ class SpellCheckPlugin:
             whitelist = set(w.lower() for w in whitelist.split("\n"))
             self.words |= whitelist
 
-
         # Hacky way of getting dictionary with symbols stripped
         self.no_symbols = set()
         for w in self.words:
