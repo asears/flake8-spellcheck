@@ -2,7 +2,11 @@
 
 import pytest
 
-from flake8_spellcheck.flake8_spellcheck import is_number, parse_camel_case, parse_snake_case
+from flake8_spellcheck.flake8_spellcheck import (
+    is_number,
+    parse_camel_case,
+    parse_snake_case,
+)
 
 
 @pytest.mark.parametrize(
@@ -243,7 +247,7 @@ class TestName:
             SOMETHING_ELS = 'SOMETHING'
         """
         )
-        result = flake8dir.run_flake8(['--spellcheck-targets=comments'])
+        result = flake8dir.run_flake8(["--spellcheck-targets=comments"])
         assert result.exit_code == 0
         assert result.out_lines == []
 

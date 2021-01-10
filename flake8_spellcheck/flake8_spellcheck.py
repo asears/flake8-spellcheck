@@ -85,7 +85,11 @@ def parse_snake_case(name, position):
     buffer = ""
     for character in name:
         index += 1
-        if character in ascii_lowercase or character in digits or character in ascii_uppercase:
+        if (
+            character in ascii_lowercase
+            or character in digits
+            or character in ascii_uppercase
+        ):
             buffer += character
         else:
             if buffer:  # noqa: WPS513
@@ -161,21 +165,27 @@ class SpellCheckPlugin:  # noqa: WPS306
         for dictionary in self.dictionaries:
             dictionary_data = pkg_resources.resource_string(__name__, dictionary)
             dictionary_data = dictionary_data.decode("utf8")
-            self.words |= set(word.lower() for word in dictionary_data.split("\n"))  # noqa: C401
+            self.words |= set(
+                word.lower() for word in dictionary_data.split("\n")
+            )  # noqa: C401
 
         # legacy
         if os.path.exists(self.whitelist_path):
             with open(self.whitelist_path, "r") as whitelist_file:
                 allowlist = whitelist_file.read()
 
-            allowlist = set(word.lower() for word in allowlist.split("\n"))  # noqa: C401
+            allowlist = set(
+                word.lower() for word in allowlist.split("\n")
+            )  # noqa: C401
             self.words |= allowlist
 
         if os.path.exists(self.allowlist_path):
             with open(self.allowlist_path, "r") as allowlist_file:
                 allowlist = allowlist_file.read()
 
-            allowlist = set(word.lower() for word in allowlist.split("\n"))  # noqa: C401
+            allowlist = set(
+                word.lower() for word in allowlist.split("\n")
+            )  # noqa: C401
             self.words |= allowlist
 
         # Hacky way of getting dictionary with symbols stripped
@@ -331,5 +341,7 @@ class SpellCheckPlugin:  # noqa: WPS306
         elif token_info.type == tokenize.COMMENT:
             use_symbols = True
 
-        for error_tuple in self._detect_errors(tokens, use_symbols, token_info.type):  # noqa: WPS526
+        for error_tuple in self._detect_errors(
+            tokens, use_symbols, token_info.type
+        ):  # noqa: WPS526
             yield error_tuple

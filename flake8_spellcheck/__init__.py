@@ -126,6 +126,7 @@ def get_code(token_type):
 
 class SpellCheckPlugin:
     """SpellCheck Plugin."""
+
     name = "flake8-spellcheck"
     version = "0.23.0"
 
