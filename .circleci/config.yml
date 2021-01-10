@@ -13,7 +13,7 @@ test: &test
         command: pip install .
     - run:
         name: run pytest
-        command: pytest --cov=flake8_spellcheck tests/ --cov-report xml -cov-report term
+        command: pytest --cov=flake8_spellcheck tests/ --cov-report xml --cov-report term
 
 
 jobs:
