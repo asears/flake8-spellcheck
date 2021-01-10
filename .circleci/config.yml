@@ -14,7 +14,8 @@ test: &test
     - run:
         name: run pytest
         command: pytest --cov=flake8_spellcheck tests/ --cov-report xml --cov-report term
-
+    - store_test_results:
+              path: test-results
 
 jobs:
   lint:
