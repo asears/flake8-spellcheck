@@ -44,10 +44,6 @@ def test_is_number(value, result):
 
 
 def test_python_words(flake8dir):
-    flake8dir.make_setup_cfg('''
-        [flake8]
-        ignore = D100,WPS125,C408
-    ''')
     flake8dir.make_example_py(
         """
         id = str(4)
@@ -67,7 +63,7 @@ class TestComments:
             foo = "bar"
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == [
             "./example.py:1:1: SC100 Possibly misspelt word: 'dont'",
             "./example.py:1:1: SC100 Possibly misspelt word: 'b4d'",
@@ -82,7 +78,7 @@ class TestComments:
             foo = "bar"
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == []
 
     def test_disabled(self, flake8dir):
@@ -98,12 +94,12 @@ class TestComments:
 
     def test_flake8_pragma(self, flake8dir):
         flake8dir.make_example_py("foo = 'bar'  # noqa: W503")
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == []
 
     def test_flake8_pragma_spaces(self, flake8dir):
         flake8dir.make_example_py("foo = 'bar'  #    noqa: W503")
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == [
             "./example.py:1:14: E262 inline comment should start with '# '"
         ]
@@ -117,7 +113,7 @@ class TestComments:
             # hello world
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == []
 
     # Regression test for https://github.com/MichaelAquilina/flake8-spellcheck/issues/36
@@ -128,7 +124,7 @@ class TestComments:
             foo = []  # type: ignore  # noqa: W503  # noqa: W504
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == []
 
     # Regression test for github.com/MichaelAquilina/flake8-spellcheck/issues/40
@@ -156,7 +152,7 @@ class TestFunctionDef:
                 return b * 4
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == []
         assert result.exit_code == 0
 
@@ -167,7 +163,7 @@ class TestFunctionDef:
                 pass
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == [
             "./example.py:1:13: SC200 Possibly misspelt word: 'classs'"
         ]
@@ -180,7 +176,7 @@ class TestFunctionDef:
                 pass
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == [
             "./example.py:1:5: SC200 Possibly misspelt word: 'mispleled'"
         ]
@@ -193,7 +189,7 @@ class TestFunctionDef:
                 pass
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == []
         assert result.exit_code == 0
 
@@ -218,7 +214,7 @@ class TestName:
             SOMETHING_ELS = "SOMETHING"
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == [
             "./example.py:1:4: SC200 Possibly misspelt word: 'varaible'",
             "./example.py:1:13: SC200 Possibly misspelt word: 'namde'",
@@ -235,7 +231,7 @@ class TestName:
             SOMETHING_ELSE = "SOMETHING"
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == []
         assert result.exit_code == 0
 
@@ -248,7 +244,7 @@ class TestName:
             SOMETHING_ELS = 'SOMETHING'
         """
         )
-        result = flake8dir.run_flake8(['--ignore','D100,WPS306','--spellcheck-targets','comments'])
+        result = flake8dir.run_flake8(['--spellcheck-targets=comments'])
         assert result.exit_code == 0
         assert result.out_lines == []
 
@@ -261,7 +257,7 @@ class TestClassDef:
             pass
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306','--use_nt_paths=True')
+        result = flake8dir.run_flake8()
         assert result.exit_code == 1
         assert result.out_lines == [
             "./example.py:1:7: SC200 Possibly misspelt word: 'Facke'",
@@ -275,7 +271,7 @@ class TestClassDef:
                 pass
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == []
 
     def test_disabled(self, flake8dir):
@@ -285,7 +281,7 @@ class TestClassDef:
             pass
         """
         )
-        result = flake8dir.run_flake8(["--spellcheck-targets','comments'"])
+        result = flake8dir.run_flake8(["--spellcheck-targets=comments'"])
         assert result.exit_code == 0
         assert result.out_lines == []
 
@@ -298,7 +294,7 @@ class TestLeadingUnderscore:
                 pass
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.exit_code == 1
         assert result.out_lines == [
             "./example.py:1:8: SC200 Possibly misspelt word: 'Ssomething'"
@@ -311,7 +307,7 @@ class TestLeadingUnderscore:
                 pass
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.exit_code == 0
         assert result.out_lines == []
 
@@ -330,7 +326,7 @@ class TestOptionalDictionaries:
                 return HttpResponse("hello world")
         """
         )
-        result = flake8dir.run_flake8('--ignore=D100,D101,WPS306')
+        result = flake8dir.run_flake8()
         assert result.out_lines == [
             "./example.py:2:30: SC200 Possibly misspelt word: 'csrf'",
             "./example.py:2:42: SC200 Possibly misspelt word: 'csrf'",
@@ -350,6 +346,6 @@ class TestOptionalDictionaries:
                 return HttpResponse('hello world')
         """
         )
-        result = flake8dir.run_flake8(["--ignore=D100,D101,D103,WPS306","--dictionaries=python,technical,django,en_US"])
+        result = flake8dir.run_flake8(["--dictionaries=python,technical,django,en_US"])
         assert result.out_lines == []
         assert result.exit_code == 0
